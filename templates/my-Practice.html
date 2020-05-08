@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../static/styleKids.css">
+    <title>Oefening</title>
+</head>
+<script type="application/javascript">
+    function playMove() {
+        if ( document.getElementById("userAnswer").value == '{{ questionAnswer }}') {
+           document.getElementById("idivco").style.visibility = "visible";
+           document.getElementById("idivco").innerHTML = "&#9989;";
+           document.getElementById("iCorrect").value = "X";
+           setTimeout(mySubmit, 1000);
+
+        }
+        else  {
+           document.getElementById("idivco").style.visibility = "visible";
+           document.getElementById("idivco").innerHTML = "&#10060;";
+           document.getElementById("iAnswer").innerHTML = "{{ question }} <strong>{{ questionAnswer }}</strong>";
+           document.getElementById("iCorrect").value = '';
+           setTimeout(mySubmit, 2000);
+        }
+    }
+    function mySubmit() {
+        {#document.getElementById("p1").value = '\xa0';#}
+        {#document.getElementById("p2").value = '\xa0';#}
+        {#document.getElementById("p3").value = '\xa0';#}
+        {#document.getElementById("p4").value = '\xa0';#}
+        {#document.getElementById("p5").value = '\xa0';#}
+        {#document.getElementById("p6").value = '\xa0';#}
+        {#document.getElementById("p7").value = '\xa0';#}
+        {#document.getElementById("p8").value = '\xa0';#}
+        {#document.getElementById("p9").value = '\xa0';#}
+        {#document.getElementById("iMove").value = '';#}
+        document.getElementById("myForm").submit();
+    }
+
+</script>
+
+<body style=" text-align: center">
+    <form method="POST" id="myForm">
+    <br>
+    <br>
+        <h1> Week {{ iWeek  }} - Day {{ iDay }}</h1>
+        <br>
+        <h1>
+            {% if iWeek == '1' or iWeek == '13' or iWeek == '25' or iWeek == '37' or iWeek == '49' %} &#128018; {% endif %}
+            {% if iWeek == '2' or iWeek == '14' or iWeek == '26' or iWeek == '38' or iWeek == '50' %} &#129412; {% endif %}
+            {% if iWeek == '3' or iWeek == '15' or iWeek == '27' or iWeek == '39' or iWeek == '51' %} &#128014; {% endif %}
+            {% if iWeek == '4' or iWeek == '16' or iWeek == '28' or iWeek == '40' or iWeek == '52' %} &#128021; {% endif %}
+            {% if iWeek == '5' or iWeek == '17' or iWeek == '29' or iWeek == '41' %} &#128030; {% endif %}
+            {% if iWeek == '6' or iWeek == '18' or iWeek == '30' or iWeek == '42' %} &#128043; {% endif %}
+            {% if iWeek == '7' or iWeek == '19' or iWeek == '31' or iWeek == '43' %} &#129302; {% endif %}
+            {% if iWeek == '8' or iWeek == '20' or iWeek == '32' or iWeek == '44' %} &#128048; {% endif %}
+            {% if iWeek == '9' or iWeek == '21' or iWeek == '33' or iWeek == '45' %} &#128063; {% endif %}
+            {% if iWeek == '10' or iWeek == '22' or iWeek == '34' or iWeek == '46' %} &#128131; {% endif %}
+            {% if iWeek == '11' or iWeek == '23' or iWeek == '35' or iWeek == '47' %} &#128373; {% endif %}
+            {% if iWeek == '12' or iWeek == '24' or iWeek == '36' or iWeek == '48' %} &#128378; {% endif %}
+            <span id="nrOfQuest"></span>
+            {% if iDay == '1' %} &#127827; {% endif %}
+            {% if iDay == '2' %} &#127798; {% endif %}
+            {% if iDay == '3' %} &#127812; {% endif %}
+            {% if iDay == '4' %} &#127817; {% endif %}
+            {% if iDay == '5' %} &#127846; {% endif %}
+            {% if iDay == '6' %} &#127822; {% endif %}
+            {% if iDay == '7' %} &#127828; {% endif %}
+        </h1>
+        <br>
+        <p style="font-size:30px; color: #cccccc" id="iAnswer">&nbsp;</p>
+        <p id="mainArea" style="font-size:60px; color: white">{{ question }}
+            <input type="text" id="userAnswer" name="userAnswer" autofocus="autofocus" style="width:90px; font-size:50px; font-family: 'Raleway', sans-serif;">
+            <input id="iGrade" name="iGrade" value="{{ iGrade }}" hidden>
+            <input id="iWeek"  name="iWeek" value="{{ iWeek }}" hidden>
+            <input id="iDay"   name="iDay" value="{{ iDay }}" hidden>
+            <input id="nrOfQuestCor"  name="nrOfQuestCor" value="{{ nrOfQuestCor }}" hidden>
+            <input id="nrOfQuestAsk"   name="nrOfQuestAsk" value="{{ nrOfQuestAsk }}" hidden>
+            <input id="questionIndex"   name="questionIndex" value="{{ questionIndex }}" hidden>
+            <input id="iCorrect"  name="iCorrect" value=" " hidden>
+            <span id="idivco" style="visibility: hidden">&#9989;</span>
+            <br>
+            <br>
+            <span id="idivco" style="" onclick="playMove()">&#9193;</span>
+        </p>
+        <h2 size="100" id="winArea"></h2>
+        </form>
+    <script>
+
+        var str = "-";
+        document.getElementById("nrOfQuest").innerHTML = str.repeat({{ nrOfQuest }});
+        if ( "{{ nrOfQuest }}" === "0") {
+            document.getElementById("mainArea").innerHTML = " "
+            document.getElementById("iAnswer").innerHTML = "<a href=\"http://www.d5mit.co.za/kidsmain.html\">Back to Menu</a>"
+            document.getElementById("winArea").innerHTML = "&#127942; <br> {{ nrOfQuestCor }} / {{ nrOfQuestAsk }}"
+            document.getElementById("block1").style.visibility = "hidden";
+        }
+        var iinput = document.getElementById("userAnswer");
+        iinput.addEventListener("keyup", function(event) {
+          if (event.keyCode === 13) {
+              event.preventDefault();
+              playMove()
+          }
+        });
+    </script>
+
+</body>
+</html>

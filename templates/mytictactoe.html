@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../static/style.css">
+    <title>Tic Tac Toe</title>
+</head>
+<script type="application/javascript">
+    function playMove(iMove) {
+        document.getElementById("iMove").value = iMove;
+        document.getElementById("myForm").submit();
+    }
+</script>
+<body style="text-align: center">
+<form id="myForm" method="POST">
+    <br>
+    <h1 size="70">Tic Tac Toe</h1>
+    <br>
+        <select name="agent">
+          <option value="UA">Level 1: Play against an untrained agent</option>
+          <option value="AS">Level 2: Play against a trained agent</option>
+          <option value="AL">Level 3: Play against a well trained agent</option>
+        </select>
+    <br>
+        <br>
+        <p>Click to play.</p>
+        <br>
+        <p class="code">
+            <div id="block1" onclick="playMove('1')">{{ p1 }}</div>
+            <div id="block1">|</div>
+            <div id="block1" onclick="playMove('2')">{{ p2 }}</div>
+            <div id="block1">|</div>
+            <div id="block1" onclick="playMove('3')">{{ p3 }}</div>
+            <br>
+            <div id="block1">------</div><br>
+            <div id="block1" onclick="playMove('4')">{{ p4 }}</div>
+            <div id="block1">|</div>
+            <div id="block1" onclick="playMove('5')">{{ p5 }}</div>
+            <div id="block1">|</div>
+            <div id="block1" onclick="playMove('6')">{{ p6 }}</div>
+            <br>
+            <div id="block1">------</div><br>
+            <div id="block1" onclick="playMove('7')">{{ p7 }}</div>
+            <div id="block1">|</div>
+            <div id="block1" onclick="playMove('8')">{{ p8 }}</div>
+            <div id="block1">|</div>
+            <div id="block1" onclick="playMove('9')">{{ p9 }}</div>
+        </p>
+    <br>
+    <br>
+    <input id="iMove" name="iMove" hidden>
+    <input id="iPlay" name="iPlay" value="{{ iPlay }}" hidden>
+    <input id="p1" name="p1" value="{{ p1 }}" hidden>
+    <input id="p2" name="p2" value="{{ p2 }}" hidden>
+    <input id="p3" name="p3" value="{{ p3 }}" hidden>
+    <input id="p4" name="p4" value="{{ p4 }}" hidden>
+    <input id="p5" name="p5" value="{{ p5 }}" hidden>
+    <input id="p6" name="p6" value="{{ p6 }}" hidden>
+    <input id="p7" name="p7" value="{{ p7 }}" hidden>
+    <input id="p8" name="p8" value="{{ p8 }}" hidden>
+    <input id="p9" name="p9" value="{{ p9 }}" hidden>
+    <input type="submit" hidden>
+
+    {{ nnOutcome }}
+    <br>
+    <br>
+    <br>
+    <br>
+    <h1>{{ iEndGame }}</h1>
+    </form>
+</body>
+</html>

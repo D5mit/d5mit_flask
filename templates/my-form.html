@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../static/style.css">
+    <title>Sentiment Analysis</title>
+</head>
+<body style=" text-align: center">
+    <br>
+    <h1 size="70">Sentiment Classification</h1>
+    <br>
+    <p>Enter text to analyse and classify the sentiment</p>
+    <br>
+    <form method="POST">
+        <textarea name="text" rows="5" cols="30">{{ itext }}</textarea>
+        <br>
+        <br>
+        <input type="submit">
+    </form>
+    <br>
+    <br>
+    {{ nnoutcome }}
+    <br>
+    <br>
+    <h1>{{ isentiment }}</h1>
+</body>
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../static/style.css">
+    <title>Scrabble</title>
+</head>
+<script type="application/javascript">
+    function playMove(iMove) {
+        document.getElementById("iMove").value = iMove;
+        var iendgame = '{{ iEndGame }}'
+        if (iendgame == '' ) {
+            if (iMove == 1 && document.getElementById("p1").value == '\xa0') {
+                document.getElementById("myForm").submit();
+            }
+            if (iMove == 2 && document.getElementById("p2").value == '\xa0') {
+                document.getElementById("myForm").submit();
+            }
+            if (iMove == 3 && document.getElementById("p3").value == '\xa0') {
+                document.getElementById("myForm").submit();
+            }
+            if (iMove == 4 && document.getElementById("p4").value == '\xa0') {
+                document.getElementById("myForm").submit();
+            }
+            if (iMove == 5 && document.getElementById("p5").value == '\xa0') {
+                document.getElementById("myForm").submit();
+            }
+            if (iMove == 6 && document.getElementById("p6").value == '\xa0') {
+                document.getElementById("myForm").submit();
+            }
+            if (iMove == 7 && document.getElementById("p7").value == '\xa0') {
+                document.getElementById("myForm").submit();
+            }
+            if (iMove == 8 && document.getElementById("p8").value == '\xa0') {
+                document.getElementById("myForm").submit();
+            }
+            if (iMove == 9 && document.getElementById("p9").value == '\xa0') {
+                document.getElementById("myForm").submit();
+            }
+        }
+    }
+    function refreshPage(){
+        document.getElementById("p1").value = '\xa0';
+        document.getElementById("p2").value = '\xa0';
+        document.getElementById("p3").value = '\xa0';
+        document.getElementById("p4").value = '\xa0';
+        document.getElementById("p5").value = '\xa0';
+        document.getElementById("p6").value = '\xa0';
+        document.getElementById("p7").value = '\xa0';
+        document.getElementById("p8").value = '\xa0';
+        document.getElementById("p9").value = '\xa0';
+        document.getElementById("iMove").value = '';
+        document.getElementById("myForm").submit();
+    }
+
+</script>
+<body>
+
+<div id="page-container">
+    <div id="content-wrap">
+       <div class="dev-center">
+           <form id="myForm" method="POST">
+               <h2>Scrabble Card Game - AI Agent</h2>
+               <br>
+               <select name="agent">
+                    <option value="1" {% if agent == '1' %} selected {% endif %}>Level 1: Play against an untrained agent </option>
+                    <option value="2" {% if agent == '2' %} selected {% endif %}>Level 2: Play against a trained agent </option>
+{#                    <option value="3">Level 3: Play against a well trained agent</option>#}
+               </select>
+               <br>
+               <br>
+               <br><p><strong>The game of Scrabble</strong></p>
+               <br>
+               <p>"Here are the rules of the game, which I shall call scrabble. The game is played by two people with nine cards -
+               let us say the ace through the nine of hearts.  The cards are placed in a row, face up, between the two players.
+               The players draw alternately, one at a time, selecting any one of the cards remain in the center.
+               The aim of the game is for a player to make up a 'book', that is, a set of exactly three cards whose spots add to 15,
+               before the opponent can do so. The first player who makes a book wins; if all nine cards have been drawn without either player
+               making a book, the game is drawn." - H. Simon
+               </p>
+               <br>
+               <br>
+               <br>
+                <table width="100%">
+                    <tr>
+                        <th>
+                            <div id="block1">PLAYER O CARDS</div>
+                        </th>
+                        <th>
+                            <div id="block1">Choose a card</div>
+                        </th>
+                        <th>
+                            <div id="block1">PLAYER X CARDS</div>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td align="center">
+                            <div id="block1" onclick="playMove('8')">{% if p8 == 'O' %} 1 {% endif %}</div>
+                            <div id="block1" onclick="playMove('3')">{% if p3 == 'O' %} 2 {% endif %}</div>
+                            <div id="block1" onclick="playMove('4')">{% if p4 == 'O' %} 3 {% endif %}</div>
+                            <div id="block1" onclick="playMove('1')">{% if p1 == 'O' %} 4 {% endif %}</div>
+                            <div id="block1" onclick="playMove('5')">{% if p5 == 'O' %} 5 {% endif %}</div>
+                            <div id="block1" onclick="playMove('9')">{% if p9 == 'O' %} 6 {% endif %}</div>
+                            <div id="block1" onclick="playMove('6')">{% if p6 == 'O' %} 7 {% endif %}</div>
+                            <div id="block1" onclick="playMove('7')">{% if p7 == 'O' %} 8 {% endif %}</div>
+                            <div id="block1" onclick="playMove('2')">{% if p2 == 'O' %} 9 {% endif %}</div>
+                        </td>
+                        <td align="center">
+                            <div id="block1" onclick="playMove('8')">{% if p8 == 'O' or p8 == 'X' %} _ {% else %} 1 {% endif %}</div><br>
+                            <div id="block1" onclick="playMove('3')">{% if p3 == 'O' or p3 == 'X' %} _ {% else %} 2 {% endif %}</div><br>
+                            <div id="block1" onclick="playMove('4')">{% if p4 == 'O' or p4 == 'X' %} _ {% else %} 3 {% endif %}</div><br>
+                            <div id="block1" onclick="playMove('1')">{% if p1 == 'O' or p1 == 'X' %} _ {% else %} 4 {% endif %}</div><br>
+                            <div id="block1" onclick="playMove('5')">{% if p5 == 'O' or p5 == 'X' %} _ {% else %} 5 {% endif %}</div><br>
+                            <div id="block1" onclick="playMove('9')">{% if p9 == 'O' or p9 == 'X' %} _ {% else %} 6 {% endif %}</div><br>
+                            <div id="block1" onclick="playMove('6')">{% if p6 == 'O' or p6 == 'X' %} _ {% else %} 7 {% endif %}</div><br>
+                            <div id="block1" onclick="playMove('7')">{% if p7 == 'O' or p7 == 'X' %} _ {% else %} 8 {% endif %}</div><br>
+                            <div id="block1" onclick="playMove('2')">{% if p2 == 'O' or p2 == 'X' %} _ {% else %} 9 {% endif %}</div><br>
+                        </td>
+                        <td align="center">
+                            <div id="block1" onclick="playMove('8')">{% if p8 == 'X' %} 1 {% endif %}</div>
+                            <div id="block1" onclick="playMove('3')">{% if p3 == 'X' %} 2 {% endif %}</div>
+                            <div id="block1" onclick="playMove('4')">{% if p4 == 'X' %} 3 {% endif %}</div>
+                            <div id="block1" onclick="playMove('1')">{% if p1 == 'X' %} 4 {% endif %}</div>
+                            <div id="block1" onclick="playMove('5')">{% if p5 == 'X' %} 5 {% endif %}</div>
+                            <div id="block1" onclick="playMove('9')">{% if p9 == 'X' %} 6 {% endif %}</div>
+                            <div id="block1" onclick="playMove('6')">{% if p6 == 'X' %} 7 {% endif %}</div>
+                            <div id="block1" onclick="playMove('7')">{% if p7 == 'X' %} 8 {% endif %}</div>
+                            <div id="block1" onclick="playMove('2')">{% if p2 == 'X' %} 9 {% endif %}</div>
+                        </td>
+                    </tr>
+                </table>
+
+               <p><strong>{{ iEndGame }}&nbsp;</strong></p>
+               <br>
+               <button type="submit"  onClick="refreshPage()">Reset Game</button>
+               <input id="iMove" name="iMove" hidden>
+               <input id="iPlay" name="iPlay" value="{{ iPlay }}" hidden>
+               <input id="p1" name="p1" value="{{ p1 }}" hidden>
+               <input id="p2" name="p2" value="{{ p2 }}" hidden>
+               <input id="p3" name="p3" value="{{ p3 }}" hidden>
+               <input id="p4" name="p4" value="{{ p4 }}" hidden>
+               <input id="p5" name="p5" value="{{ p5 }}" hidden>
+               <input id="p6" name="p6" value="{{ p6 }}" hidden>
+               <input id="p7" name="p7" value="{{ p7 }}" hidden>
+               <input id="p8" name="p8" value="{{ p8 }}" hidden>
+               <input id="p9" name="p9" value="{{ p9 }}" hidden>
+               <br>
+               <input type="submit" hidden>
+               <br>
+               <p>
+                   Neural Network<br>
+                   Boardstate (X): {{ boardstate }}<br>
+                   AI Output (y): {{ nnOutcome }}<br>
+                   <br>
+               </p>
+               <br>
+               <br>
+               <br>
+               <br>
+               <br><p><strong>Representation of the Design</strong></p>
+               <br>
+               <p>
+                   Select the text that is in black below to reveal the strategy.  Easiest wat is to select all text.
+                   <br> <br>
+                   "The magic here is made up of numerals from1 through 9. Each row, column , or diagonal adds to 15,
+                   and every triple of these numerals that add to 15 is a row, column, or diagonal or the magic square.
+                   From this, it is obvious that making a book in number scrabble is equivalent to getting three in a row
+                   in the game of tic-tac-toe." - H. Simon
+
+               </p>
+               <p class="code">
+                <div style="margin: 10px">
+                    <div id="block1black">4</div><div id="block1black">|</div><div id="block1black">9</div><div id="block1black">|</div><div id="block1black">2</div><br>
+                    <div id="block1black"> -----</div><br>
+                    <div id="block1black">3</div><div id="block1black">|</div><div id="block1black">5</div><div id="block1black">|</div><div id="block1black">7</div><br>
+                    <div id="block1black"> -----</div><br>
+                    <div id="block1black">8</div><div id="block1black">|</div><div id="block1black">1</div><div id="block1black">|</div><div id="block1black">6</div><br>
+
+                </div>
+               </p>
+               <br>
+               <p class="code">
+                <div style="margin: 10px">
+                    <div id="block1black" > {{ p1 }}</div><div id="block1black">|</div><div id="block1black" >{{ p2 }}</div><div id="block1black">|</div><div id="block1black" >{{ p3 }}</div><br>
+                    <div id="block1black"> -----</div><br>
+                    <div id="block1black"> {{ p4 }}</div><div id="block1black">|</div><div id="block1black" >{{ p5 }}</div><div id="block1black">|</div><div id="block1black" >{{ p6 }}</div><br>
+                    <div id="block1black"> -----</div><br>
+                    <div id="block1black"> {{ p7 }}</div><div id="block1black">|</div><div id="block1black" >{{ p8 }}</div><div id="block1black">|</div><div id="block1black" >{{ p9 }}</div><br>
+
+                </div>
+
+            </form>
+       </div>
+    </div>
+    <footer id="footer"></footer>
+</div>
+</body>
+</html>

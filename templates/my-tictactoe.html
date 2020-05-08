@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../static/style.css">
+    <title>Tic Tac Toe</title>
+</head>
+<script type="application/javascript">
+    function playMove(iMove) {
+        document.getElementById("iMove").value = iMove;
+        var iendgame = '{{ iEndGame }}'
+        if (iendgame == '' ) {
+            if (iMove == 1 && document.getElementById("p1").value == '\xa0') {
+                document.getElementById("myForm").submit();
+            }
+            if (iMove == 2 && document.getElementById("p2").value == '\xa0') {
+                document.getElementById("myForm").submit();
+            }
+            if (iMove == 3 && document.getElementById("p3").value == '\xa0') {
+                document.getElementById("myForm").submit();
+            }
+            if (iMove == 4 && document.getElementById("p4").value == '\xa0') {
+                document.getElementById("myForm").submit();
+            }
+            if (iMove == 5 && document.getElementById("p5").value == '\xa0') {
+                document.getElementById("myForm").submit();
+            }
+            if (iMove == 6 && document.getElementById("p6").value == '\xa0') {
+                document.getElementById("myForm").submit();
+            }
+            if (iMove == 7 && document.getElementById("p7").value == '\xa0') {
+                document.getElementById("myForm").submit();
+            }
+            if (iMove == 8 && document.getElementById("p8").value == '\xa0') {
+                document.getElementById("myForm").submit();
+            }
+            if (iMove == 9 && document.getElementById("p9").value == '\xa0') {
+                document.getElementById("myForm").submit();
+            }
+        }
+    }
+    function refreshPage(){
+        document.getElementById("p1").value = '\xa0';
+        document.getElementById("p2").value = '\xa0';
+        document.getElementById("p3").value = '\xa0';
+        document.getElementById("p4").value = '\xa0';
+        document.getElementById("p5").value = '\xa0';
+        document.getElementById("p6").value = '\xa0';
+        document.getElementById("p7").value = '\xa0';
+        document.getElementById("p8").value = '\xa0';
+        document.getElementById("p9").value = '\xa0';
+        document.getElementById("iMove").value = '';
+        document.getElementById("myForm").submit();
+    }
+
+</script>
+<body>
+
+<div id="page-container">
+    <div id="content-wrap">
+       <div class="dev-center">
+           <form id="myForm" method="POST">
+               <h2>Tic Tac Toe AI Agent</h2>
+               <br>
+               <select name="agent">
+                    <option value="1" {% if agent == '1' %} selected {% endif %}>Level 1: Play against an untrained agent </option>
+                    <option value="2" {% if agent == '2' %} selected {% endif %}>Level 2: Play against a trained agent </option>
+{#                    <option value="3">Level 3: Play against a well trained agent</option>#}
+               </select>
+               <br>
+               <br>
+               <p>Click to play:</p>
+               <br>
+               <p class="code">
+                <div style="margin: 10px">
+                    <div id="block1" onclick="playMove('1')"> {{ p1 }}</div><div id="block1">|</div><div id="block1" onclick="playMove('2')">{{ p2 }}</div><div id="block1">|</div><div id="block1" onclick="playMove('3')">{{ p3 }}</div><br>
+                    <div id="block1"> -----</div><br>
+                    <div id="block1" onclick="playMove('4')"> {{ p4 }}</div><div id="block1">|</div><div id="block1" onclick="playMove('5')">{{ p5 }}</div><div id="block1">|</div><div id="block1" onclick="playMove('6')">{{ p6 }}</div><br>
+                    <div id="block1"> -----</div><br>
+                    <div id="block1" onclick="playMove('7')"> {{ p7 }}</div><div id="block1">|</div><div id="block1" onclick="playMove('8')">{{ p8 }}</div><div id="block1">|</div><div id="block1" onclick="playMove('9')">{{ p9 }}</div><br>
+
+                </div>
+               </p>
+               <p><strong>{{ iEndGame }}&nbsp;</strong></p>
+               <br>
+               <button type="submit"  onClick="refreshPage()">Reset Game</button>
+               <input id="iMove" name="iMove" hidden>
+               <input id="iPlay" name="iPlay" value="{{ iPlay }}" hidden>
+               <input id="p1" name="p1" value="{{ p1 }}" hidden>
+               <input id="p2" name="p2" value="{{ p2 }}" hidden>
+               <input id="p3" name="p3" value="{{ p3 }}" hidden>
+               <input id="p4" name="p4" value="{{ p4 }}" hidden>
+               <input id="p5" name="p5" value="{{ p5 }}" hidden>
+               <input id="p6" name="p6" value="{{ p6 }}" hidden>
+               <input id="p7" name="p7" value="{{ p7 }}" hidden>
+               <input id="p8" name="p8" value="{{ p8 }}" hidden>
+               <input id="p9" name="p9" value="{{ p9 }}" hidden>
+               <br>
+               <input type="submit" hidden>
+               <br>
+               <p>
+                   Neural Network<br>
+                   Boardstate (X): {{ boardstate }}<br>
+                   AI Output (y): {{ nnOutcome }}<br>
+                   <br>
+               </p>
+            </form>
+       </div>
+    </div>
+    <footer id="footer"></footer>
+</div>
+</body>
+</html>
