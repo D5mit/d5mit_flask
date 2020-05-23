@@ -12,7 +12,8 @@ app = Flask(__name__)
 
 # -------------------------sentiment model
 global graph
-json_file = open('../d5mit_flask/static/modelSentiment.json', 'r')
+# json_file = open('../d5mit_flask/static/modelSentiment.json', 'r')
+json_file = open('static/modelSentiment.json', 'r')
 loaded_model_json = json_file.read()
 json_file.close()
 loaded_model = model_from_json(loaded_model_json)
@@ -27,7 +28,8 @@ print(loaded_model)
 
 # ------------------------tic tac toe model
 # load json and create model
-json_file = open('../d5mit_flask/static/modelAgentLinki.json', 'r')
+# json_file = open('../d5mit_flask/static/modelAgentLinki.json', 'r')
+json_file = open('static/modelAgentLinki.json', 'r')
 loaded_model_json = json_file.read()
 json_file.close()
 loaded_modelL = model_from_json(loaded_model_json)
@@ -89,10 +91,10 @@ def my_form_post():
 
     INDEX_FROM=3   # word index offset
 
-    import os, ssl
-    if (not os.environ.get('PYTHONHTTPSVERIFY', '') and
-            getattr(ssl, '_create_unverified_context',
-                    None)): ssl._create_default_https_context = ssl._create_unverified_contex
+    # import os, ssl
+    # if (not os.environ.get('PYTHONHTTPSVERIFY', '') and
+    #         getattr(ssl, '_create_unverified_context',
+    #                 None)): ssl._create_default_https_context = ssl._create_unverified_contex
 
     word_to_id = imdb.get_word_index()
     word_to_id = {k:(v+INDEX_FROM) for k,v in word_to_id.items()}
@@ -559,5 +561,5 @@ def my_PracticePost():
     # return render_template('Practice.html')
 
 if __name__ == '__main__':
-    # app.run(host='0.0.0.0', port=80, threaded=False)
+    #app.run(host='0.0.0.0', port=80, threaded=False)
     app.run()
