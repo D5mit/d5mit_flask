@@ -63,8 +63,8 @@
                <h2>Tic Tac Toe AI Agent</h2>
                <br>
                <select name="agent">
-                    <option value="1" {% if agent == '1' %} selected {% endif %}>Level 1: Play against an untrained agent </option>
-                    <option value="2" {% if agent == '2' %} selected {% endif %}>Level 2: Play against a trained agent </option>
+                    <option value="1" {% if agent =='1' %} selected {% endif %}>Level 1: Play against an untrained agent </option>
+                    <option value="2" {% if agent =='2' %} selected {% endif %}>Level 2: Play against a trained agent </option>
 {#                    <option value="3">Level 3: Play against a well trained agent</option>#}
                </select>
                <br>
@@ -83,7 +83,7 @@
                </p>
                <p><strong>{{ iEndGame }}&nbsp;</strong></p>
                <br>
-               <button type="submit"  onClick="refreshPage()">Reset Game</button>
+               <button type="button"  onClick="location.href='/tictactoe'">Reset Game</button>
                <input id="iMove" name="iMove" hidden>
                <input id="iPlay" name="iPlay" value="{{ iPlay }}" hidden>
                <input id="p1" name="p1" value="{{ p1 }}" hidden>

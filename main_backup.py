@@ -123,9 +123,6 @@ def my_form_post():
 # tic tac toe home page ---------------------------------------------
 @app.route('/tictactoe')
 def my_tictactoe():
-
-    print('tictactoe')
-
     p1 = '\xa0'
     p2 = '\xa0'
     p3 = '\xa0'
@@ -135,38 +132,18 @@ def my_tictactoe():
     p7 = '\xa0'
     p8 = '\xa0'
     p9 = '\xa0'
-    iPlay = 'O'
-    agent = '2'
-
-    move, x, y = makePrediction(p1, p2, p3, p4, p5, p6, p7, p8, p9, agent)
-    boardstate = x
-    nnOutcome = y
-    iMove = str(move)                               #....
-    if spaceIsFree(iMove, p1, p2, p3, p4, p5, p6, p7, p8, p9):
-        p1, p2, p3, p4, p5, p6, p7, p8, p9 = playMove(iMove, 'X', p1, p2, p3, p4, p5, p6, p7, p8, p9)
-        # determine winner/tie or continue game
-        if isWinner(p1, p2, p3, p4, p5, p6, p7, p8, p9, 'X'):  # O Winner
-            iEndGame = 'O won!'
-        run = False
-    # else:
-    # print('Space is occupied!')
-
+    iPlay = 'X'
     return render_template('my-tictactoe.html',
-            boardstate=boardstate,
-            nnOutcome=nnOutcome,
-            p1=p1,
-            p2=p2,
-            p3=p3,
-            p4=p4,
-            p5=p5,
-            p6=p6,
-            p7=p7,
-            p8=p8,
-            p9=p9,
-            iPlay=iPlay,
-            agent=agent)
-
-
+                           p1=p1,
+                           p2=p2,
+                           p3=p3,
+                           p4=p4,
+                           p5=p5,
+                           p6=p6,
+                           p7=p7,
+                           p8=p8,
+                           p9=p9,
+                           iPlay=iPlay)
 
 # card game home page ---------------------------------------------
 @app.route('/tictactoecard')
@@ -364,7 +341,6 @@ def makePrediction(p1, p2, p3, p4, p5, p6, p7, p8, p9, mode):
 
     #ynew = model.predict_proba(iX)
     if mode == '1':
-        print('1')
         prednr = random.randint(1, 9)
         ynew = np.zeros(9)
         ynew[prednr-1] = 1
@@ -414,11 +390,11 @@ def my_tictactoe_post():
 
     # X play
     if spaceIsFree(iMove, p1, p2, p3, p4, p5, p6, p7, p8, p9):
-        p1, p2, p3, p4, p5, p6, p7, p8, p9 = playMove(iMove, 'O', p1, p2, p3, p4, p5, p6, p7, p8, p9)
+        p1, p2, p3, p4, p5, p6, p7, p8, p9 = playMove(iMove, 'X', p1, p2, p3, p4, p5, p6, p7, p8, p9)
 
         # determine winner/tie or continue game
-        if isWinner(p1, p2, p3, p4, p5, p6, p7, p8, p9, 'O'):  # O Winner
-            iEndGame = 'O won!'
+        if isWinner(p1, p2, p3, p4, p5, p6, p7, p8, p9, 'X'):  # O Winner
+            iEndGame = 'X won!'
 
         # O play
         run = boardNotFull(p1, p2, p3, p4, p5, p6, p7, p8, p9)
@@ -431,10 +407,10 @@ def my_tictactoe_post():
             iMove = str(move)
             # print(move)
             if spaceIsFree(iMove, p1, p2, p3, p4, p5, p6, p7, p8, p9):
-                p1, p2, p3, p4, p5, p6, p7, p8, p9 = playMove(iMove, 'X', p1, p2, p3, p4, p5, p6, p7, p8, p9)
+                p1, p2, p3, p4, p5, p6, p7, p8, p9 = playMove(iMove, 'O', p1, p2, p3, p4, p5, p6, p7, p8, p9)
                 # determine winner/tie or continue game
-                if isWinner(p1, p2, p3, p4, p5, p6, p7, p8, p9, 'X'):  # O Winner
-                    iEndGame = 'X won!'
+                if isWinner(p1, p2, p3, p4, p5, p6, p7, p8, p9, 'O'):  # O Winner
+                    iEndGame = 'O won!'
                 run = False
             # else:
                 # print('Space is occupied!')

@@ -135,7 +135,7 @@ def my_tictactoe():
     p7 = '\xa0'
     p8 = '\xa0'
     p9 = '\xa0'
-    iPlay = 'O'
+    iPlay = 'O'                                     #todo
     agent = '2'
 
     move, x, y = makePrediction(p1, p2, p3, p4, p5, p6, p7, p8, p9, agent)
