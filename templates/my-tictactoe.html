@@ -61,16 +61,15 @@
        <div class="dev-center">
            <form id="myForm" method="POST">
                <h2>Tic Tac Toe AI Agent</h2>
-               <br>
                <select name="agent">
                     <option value="1" {% if agent =='1' %} selected {% endif %}>Level 1: Play against an untrained agent </option>
                     <option value="2" {% if agent =='2' %} selected {% endif %}>Level 2: Play against a trained agent </option>
 {#                    <option value="3">Level 3: Play against a well trained agent</option>#}
                </select>
+               <button type="button"  onClick="location.href='/tictactoe'">Reset Game</button>
                <br>
                <br>
                <p>Click to play:</p>
-               <br>
                <p class="code">
                 <div style="margin: 10px">
                     <div id="block1" onclick="playMove('1')"> {{ p1 }}</div><div id="block1">|</div><div id="block1" onclick="playMove('2')">{{ p2 }}</div><div id="block1">|</div><div id="block1" onclick="playMove('3')">{{ p3 }}</div><br>
@@ -82,8 +81,6 @@
                 </div>
                </p>
                <p><strong>{{ iEndGame }}&nbsp;</strong></p>
-               <br>
-               <button type="button"  onClick="location.href='/tictactoe'">Reset Game</button>
                <input id="iMove" name="iMove" hidden>
                <input id="iPlay" name="iPlay" value="{{ iPlay }}" hidden>
                <input id="p1" name="p1" value="{{ p1 }}" hidden>
@@ -97,13 +94,130 @@
                <input id="p9" name="p9" value="{{ p9 }}" hidden>
                <br>
                <input type="submit" hidden>
-               <br>
                <p>
-                   Neural Network<br>
-                   Boardstate (X): {{ boardstate }}<br>
-                   AI Output (y): {{ nnOutcome }}<br>
+                   <strong>Neural Network</strong><br>
+                   Board(X): {{ boardstate }} -> Output(y): {{ nnOutcome }}
                    <br>
                </p>
+                <table style="color: black;" width="700px" border="0" cellpadding="0" background="https://s3.us-east-2.amazonaws.com/d5mit.co.za/images/NNLinki.jpg">
+                <tr>
+                    <td width="55px" height="8px"></td>
+                    <td width="50px"></td>
+                    <td width="508px"></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td height="26px"></td>
+                    <td>{{ boardstate[0:1] }}</td>
+                    <td></td>
+                    <td>0.000</td>
+                </tr>
+                <tr>
+                    <td height="26px"></td>
+                    <td>{{ boardstate[1:2] }}</td>
+                    <td></td>
+                    <td>0.000</td>
+                </tr>
+                <tr>
+                    <td height="25px"></td>
+                    <td>{{ boardstate[2:3] }}</td>
+                    <td></td>
+                    <td>0.000</td>
+                </tr>
+                <tr>
+                    <td height="25px"></td>
+                    <td>{{ boardstate[3:4] }}</td>
+                    <td></td>
+                    <td>0.000</td>
+                </tr>
+                <tr>
+                    <td height="25px"></td>
+                    <td>{{ boardstate[4:5] }}</td>
+                    <td></td>
+                    <td>{{ strnnOutcome1 }}</td>
+                </tr>
+                <tr>
+                    <td height="25px"></td>
+                    <td>{{ boardstate[5:6] }}</td>
+                    <td></td>
+                    <td>{{ strnnOutcome2 }}</td>
+                </tr>
+                <tr>
+                    <td height="25px"></td>
+                    <td>{{ boardstate[6:7] }}</td>
+                    <td></td>
+                    <td>{{ strnnOutcome3 }}</td>
+                </tr>
+                <tr>
+                    <td height="26px"></td>
+                    <td>{{ boardstate[7:8] }}</td>
+                    <td></td>
+                    <td>{{ strnnOutcome4 }}</td>
+                </tr>
+                <tr>
+                    <td height="25px"></td>
+                    <td>{{ boardstate[8:9] }}</td>
+                    <td></td>
+                    <td>{{ strnnOutcome5 }}</td>
+                </tr>
+                <tr>
+                    <td height="25px"></td>
+                    <td>{{ boardstate[9:10] }}</td>
+                    <td></td>
+                    <td>{{ strnnOutcome6 }}</td>
+                </tr>
+                <tr>
+                    <td height="25px"></td>
+                    <td>{{ boardstate[10:11] }}</td>
+                    <td></td>
+                    <td>{{ strnnOutcome7 }}</td>
+                </tr>
+                <tr>
+                    <td height="25px"></td>
+                    <td>{{ boardstate[11:12] }}</td>
+                    <td></td>
+                    <td>{{ strnnOutcome8 }}</td>
+                </tr>
+                <tr>
+                    <td height="26px"></td>
+                    <td>{{ boardstate[12:13] }}</td>
+                    <td></td>
+                    <td>{{ strnnOutcome9 }}</td>
+                </tr>
+                <tr>
+                    <td height="25px"></td>
+                    <td>{{ boardstate[13:14] }}</td>
+                    <td></td>
+                    <td>0.000</td>
+                </tr>
+                <tr>
+                    <td height="25px"></td>
+                    <td>{{ boardstate[14:15] }}</td>
+                    <td></td>
+                    <td>0.000</td>
+                </tr>
+                <tr>
+                    <td height="25px"></td>
+                    <td>{{ boardstate[15:16] }}</td>
+                    <td></td>
+                    <td>0.000</td>
+                </tr>
+                <tr>
+                    <td height="25px"></td>
+                    <td>{{ boardstate[16:17] }}</td>
+                    <td></td>
+                    <td>0.000</td>
+                </tr>
+                <tr>
+                    <td height="25px"></td>
+                    <td>{{ boardstate[17:18] }}</td>
+                    <td></td>
+                    <td>0.000</td>
+                </tr>
+                </table>
+               <br>
+               <br>
+               <br>
             </form>
        </div>
     </div>
