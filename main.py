@@ -1,5 +1,5 @@
 from flask import Flask, request, render_template
-from keras.models import model_from_json
+
 import keras.backend.tensorflow_backend as tb
 from keras.preprocessing.text import Tokenizer
 from keras.datasets import imdb
@@ -7,37 +7,16 @@ import re
 import numpy as np
 import random
 import pandas as pd
+from waitress import serve
+import functions.ttt_predict as ttt_predict
+import functions.sentiment_predict as sentiment_predict
 
 app = Flask(__name__)
 
-# -------------------------sentiment model
-global graph
-# json_file = open('../d5mit_flask/static/modelSentiment.json', 'r')
-json_file = open('static/modelSentiment.json', 'r')
-loaded_model_json = json_file.read()
-json_file.close()
-loaded_model = model_from_json(loaded_model_json)
-
-# load weights into new model
-loaded_model.load_weights("static/modelSentiment.h5")
-# # evaluate loaded model on test data
-loaded_model.compile(loss='binary_crossentropy', optimizer='rmsprop', metrics=['accuracy'])
-print('model loaded')
-print(loaded_model)
 
 
-# ------------------------tic tac toe model
-# load json and create model
-# json_file = open('../d5mit_flask/static/modelAgentLinki.json', 'r')
-json_file = open('static/modelAgentLinki.json', 'r')
-loaded_model_json = json_file.read()
-json_file.close()
-loaded_modelL = model_from_json(loaded_model_json)
-# load weights into new model
-loaded_modelL.load_weights("static/modelAgentLinki.h5")
-print("Loaded Agent Linki from disk")
-# evaluate loaded model on test data
-loaded_modelL.compile(loss='binary_crossentropy', optimizer='rmsprop', metrics=['accuracy'])
+
+
 
 global questionsGlobal
 
@@ -60,7 +39,7 @@ def getQuestion():
         xNew = np.random.multinomial(1, list(questLeft))
         questionIndex = np.argmax(xNew)
 
-        # return question, questionindex, answr
+        # return question, questionindex, answr number of questions
         return app.questionsGlobal[questionIndex, 0], questionIndex, app.questionsGlobal[questionIndex, 1], nrOfQuest
 
     else:
@@ -109,8 +88,8 @@ def my_form_post():
 
     x_predict = tokenizer.sequences_to_matrix(x_ireview, mode='binary')
 
-    ynew =loaded_model.predict_proba(x_predict)
-
+    # ynew =loaded_model.predict_proba(x_predict)
+    ynew = sentiment_predict.sentiment_predict(x_predict)
     #
     if ynew[0, 1] < 0.5:
         isentiment = ':('
@@ -395,7 +374,9 @@ def makePrediction(p1, p2, p3, p4, p5, p6, p7, p8, p9, mode):
     elif mode == '2':
         # print('2')
 
-        ynew = loaded_modelL.predict_proba(iX)
+        ynew = ttt_predict.predict_tt(iX)
+        # ynew = loaded_modelL.predict_proba(iX)
+
         if np.sum(iX[0]) == 0:
             ynew = np.random.multinomial(1, ynew[0])
         prednr = np.argmax(ynew) + 1
@@ -616,3 +597,4 @@ def my_PracticePost():
 if __name__ == '__main__':
     # app.run(host='0.0.0.0', port=80, threaded=False)
     app.run()
+    # serve(app, host='0.0.0.0', port=80)

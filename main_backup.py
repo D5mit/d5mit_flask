@@ -7,12 +7,15 @@ import re
 import numpy as np
 import random
 import pandas as pd
+from waitress import serve
+import functions.ttt_predict as ttt_predict
 
 app = Flask(__name__)
 
 # -------------------------sentiment model
 global graph
-json_file = open('../d5mit_flask/static/modelSentiment.json', 'r')
+# json_file = open('../d5mit_flask/static/modelSentiment.json', 'r')
+json_file = open('static/modelSentiment.json', 'r')
 loaded_model_json = json_file.read()
 json_file.close()
 loaded_model = model_from_json(loaded_model_json)
@@ -25,17 +28,7 @@ print('model loaded')
 print(loaded_model)
 
 
-# ------------------------tic tac toe model
-# load json and create model
-json_file = open('../d5mit_flask/static/modelAgentLinki.json', 'r')
-loaded_model_json = json_file.read()
-json_file.close()
-loaded_modelL = model_from_json(loaded_model_json)
-# load weights into new model
-loaded_modelL.load_weights("static/modelAgentLinki.h5")
-print("Loaded Agent Linki from disk")
-# evaluate loaded model on test data
-loaded_modelL.compile(loss='binary_crossentropy', optimizer='rmsprop', metrics=['accuracy'])
+
 
 global questionsGlobal
 
@@ -58,7 +51,7 @@ def getQuestion():
         xNew = np.random.multinomial(1, list(questLeft))
         questionIndex = np.argmax(xNew)
 
-        # return question, questionindex, answr
+        # return question, questionindex, answr number of questions
         return app.questionsGlobal[questionIndex, 0], questionIndex, app.questionsGlobal[questionIndex, 1], nrOfQuest
 
     else:
@@ -89,10 +82,10 @@ def my_form_post():
 
     INDEX_FROM=3   # word index offset
 
-    import os, ssl
-    if (not os.environ.get('PYTHONHTTPSVERIFY', '') and
-            getattr(ssl, '_create_unverified_context',
-                    None)): ssl._create_default_https_context = ssl._create_unverified_contex
+    # import os, ssl
+    # if (not os.environ.get('PYTHONHTTPSVERIFY', '') and
+    #         getattr(ssl, '_create_unverified_context',
+    #                 None)): ssl._create_default_https_context = ssl._create_unverified_contex
 
     word_to_id = imdb.get_word_index()
     word_to_id = {k:(v+INDEX_FROM) for k,v in word_to_id.items()}
@@ -108,7 +101,7 @@ def my_form_post():
     x_predict = tokenizer.sequences_to_matrix(x_ireview, mode='binary')
 
     ynew =loaded_model.predict_proba(x_predict)
-    print(ynew.shape)
+
     #
     if ynew[0, 1] < 0.5:
         isentiment = ':('
@@ -123,6 +116,9 @@ def my_form_post():
 # tic tac toe home page ---------------------------------------------
 @app.route('/tictactoe')
 def my_tictactoe():
+
+    # print('tictactoe')
+
     p1 = '\xa0'
     p2 = '\xa0'
     p3 = '\xa0'
@@ -132,18 +128,59 @@ def my_tictactoe():
     p7 = '\xa0'
     p8 = '\xa0'
     p9 = '\xa0'
-    iPlay = 'X'
+    iPlay = 'O'
+    agent = '2'
+
+    move, x, y = makePrediction(p1, p2, p3, p4, p5, p6, p7, p8, p9, agent)
+    boardstate = x
+    nnOutcome = y
+    iMove = str(move)                               #....
+    if spaceIsFree(iMove, p1, p2, p3, p4, p5, p6, p7, p8, p9):
+        p1, p2, p3, p4, p5, p6, p7, p8, p9 = playMove(iMove, 'X', p1, p2, p3, p4, p5, p6, p7, p8, p9)
+        # determine winner/tie or continue game
+        if isWinner(p1, p2, p3, p4, p5, p6, p7, p8, p9, 'X'):  # O Winner
+            iEndGame = 'O won!'
+        run = False
+    # else:
+    # print('Space is occupied!')
+
+    strboardstate = str(boardstate)
+    strnnOutcome1 = str(nnOutcome[0])
+    strnnOutcome2 = str(nnOutcome[1])
+    strnnOutcome3 = str(nnOutcome[2])
+    strnnOutcome4 = str(nnOutcome[3])
+    strnnOutcome5 = str(nnOutcome[4])
+    strnnOutcome6 = str(nnOutcome[5])
+    strnnOutcome7 = str(nnOutcome[6])
+    strnnOutcome8 = str(nnOutcome[7])
+    strnnOutcome9 = str(nnOutcome[8])
+
     return render_template('my-tictactoe.html',
-                           p1=p1,
-                           p2=p2,
-                           p3=p3,
-                           p4=p4,
-                           p5=p5,
-                           p6=p6,
-                           p7=p7,
-                           p8=p8,
-                           p9=p9,
-                           iPlay=iPlay)
+            boardstate=boardstate,
+            nnOutcome=nnOutcome,
+            strboardstate=strboardstate,
+            strnnOutcome1=strnnOutcome1,
+            strnnOutcome2=strnnOutcome2,
+            strnnOutcome3=strnnOutcome3,
+            strnnOutcome4=strnnOutcome4,
+            strnnOutcome5=strnnOutcome5,
+            strnnOutcome6=strnnOutcome6,
+            strnnOutcome7=strnnOutcome7,
+            strnnOutcome8=strnnOutcome8,
+            strnnOutcome9=strnnOutcome9,
+            p1=p1,
+            p2=p2,
+            p3=p3,
+            p4=p4,
+            p5=p5,
+            p6=p6,
+            p7=p7,
+            p8=p8,
+            p9=p9,
+            iPlay=iPlay,
+            agent=agent)
+
+
 
 # card game home page ---------------------------------------------
 @app.route('/tictactoecard')
@@ -341,18 +378,27 @@ def makePrediction(p1, p2, p3, p4, p5, p6, p7, p8, p9, mode):
 
     #ynew = model.predict_proba(iX)
     if mode == '1':
+        # print('1')
         prednr = random.randint(1, 9)
         ynew = np.zeros(9)
         ynew[prednr-1] = 1
 
     elif mode == '2':
-        print('2')
+        # print('2')
 
-        ynew = loaded_modelL.predict_proba(iX)
+        ynew = ttt_predict.predict_tt(iX)
+        # ynew = loaded_modelL.predict_proba(iX)
+
         if np.sum(iX[0]) == 0:
             ynew = np.random.multinomial(1, ynew[0])
         prednr = np.argmax(ynew) + 1
-        ynew = np.around(ynew, decimals=3)
+        ynew = np.around(ynew[0:9], decimals=3)
+        if ynew.shape[0] == 9:
+            ynew = ynew
+        else:
+            ynew = ynew[0]
+
+        # print(str(ynew))
 
     elif mode == '3':
         print('3')
@@ -390,11 +436,11 @@ def my_tictactoe_post():
 
     # X play
     if spaceIsFree(iMove, p1, p2, p3, p4, p5, p6, p7, p8, p9):
-        p1, p2, p3, p4, p5, p6, p7, p8, p9 = playMove(iMove, 'X', p1, p2, p3, p4, p5, p6, p7, p8, p9)
+        p1, p2, p3, p4, p5, p6, p7, p8, p9 = playMove(iMove, 'O', p1, p2, p3, p4, p5, p6, p7, p8, p9)
 
         # determine winner/tie or continue game
-        if isWinner(p1, p2, p3, p4, p5, p6, p7, p8, p9, 'X'):  # O Winner
-            iEndGame = 'X won!'
+        if isWinner(p1, p2, p3, p4, p5, p6, p7, p8, p9, 'O'):  # O Winner
+            iEndGame = 'O won!'
 
         # O play
         run = boardNotFull(p1, p2, p3, p4, p5, p6, p7, p8, p9)
@@ -407,18 +453,38 @@ def my_tictactoe_post():
             iMove = str(move)
             # print(move)
             if spaceIsFree(iMove, p1, p2, p3, p4, p5, p6, p7, p8, p9):
-                p1, p2, p3, p4, p5, p6, p7, p8, p9 = playMove(iMove, 'O', p1, p2, p3, p4, p5, p6, p7, p8, p9)
+                p1, p2, p3, p4, p5, p6, p7, p8, p9 = playMove(iMove, 'X', p1, p2, p3, p4, p5, p6, p7, p8, p9)
                 # determine winner/tie or continue game
-                if isWinner(p1, p2, p3, p4, p5, p6, p7, p8, p9, 'O'):  # O Winner
-                    iEndGame = 'O won!'
+                if isWinner(p1, p2, p3, p4, p5, p6, p7, p8, p9, 'X'):  # O Winner
+                    iEndGame = 'X won!'
                 run = False
             # else:
                 # print('Space is occupied!')
 
+    strboardstate = str(boardstate)
+    strnnOutcome1 = str(nnOutcome[0])
+    strnnOutcome2 = str(nnOutcome[1])
+    strnnOutcome3 = str(nnOutcome[2])
+    strnnOutcome4 = str(nnOutcome[3])
+    strnnOutcome5 = str(nnOutcome[4])
+    strnnOutcome6 = str(nnOutcome[5])
+    strnnOutcome7 = str(nnOutcome[6])
+    strnnOutcome8 = str(nnOutcome[7])
+    strnnOutcome9 = str(nnOutcome[8])
 
     return render_template('my-tictactoe.html',
             boardstate=boardstate,
             nnOutcome=nnOutcome,
+            strboardstate=strboardstate,
+            strnnOutcome1=strnnOutcome1,
+            strnnOutcome2=strnnOutcome2,
+            strnnOutcome3=strnnOutcome3,
+            strnnOutcome4=strnnOutcome4,
+            strnnOutcome5=strnnOutcome5,
+            strnnOutcome6=strnnOutcome6,
+            strnnOutcome7=strnnOutcome7,
+            strnnOutcome8=strnnOutcome8,
+            strnnOutcome9=strnnOutcome9,
             iEndGame=iEndGame,
             p1=p1,
             p2=p2,
@@ -467,7 +533,9 @@ def my_tictactoecard_post():
         run = boardNotFull(p1, p2, p3, p4, p5, p6, p7, p8, p9)
         if iEndGame != '':
             run = False
+        icount = 0
         while run:
+            icount = icount + 1
             move, x, y = makePrediction(p1, p2, p3, p4, p5, p6, p7, p8, p9, agent)
             boardstate = x
             nnOutcome = y
@@ -479,13 +547,17 @@ def my_tictactoecard_post():
                 if isWinner(p1, p2, p3, p4, p5, p6, p7, p8, p9, 'O'):  # O Winner
                     iEndGame = 'O won!'
                 run = False
+            if icount > 50:
+                run = False
             # else:
                 # print('Space is occupied!')
 
+    strboardstate = str(boardstate)
 
     return render_template('my-tictactoecard.html',
             boardstate=boardstate,
             nnOutcome=nnOutcome,
+            strboardstate=strboardstate,
             iEndGame=iEndGame,
             p1=p1,
             p2=p2,
@@ -536,4 +608,5 @@ def my_PracticePost():
 
 if __name__ == '__main__':
     # app.run(host='0.0.0.0', port=80, threaded=False)
-    app.run()
+    # app.run()
+    serve(app, host='0.0.0.0', port=80)
