@@ -1,7 +1,9 @@
 def sentiment_predict(x_predict):
 # -------------------------sentiment model
     from keras.models import model_from_json
-    global graph
+    import keras.backend.tensorflow_backend as tb
+    tb._SYMBOLIC_SCOPE.value = True
+
     # json_file = open('../d5mit_flask/static/modelSentiment.json', 'r')
     json_file = open('static/modelSentiment.json', 'r')
     loaded_model_json = json_file.read()
