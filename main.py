@@ -1,9 +1,5 @@
 from flask import Flask, request, render_template
 
-import keras.backend.tensorflow_backend as tb
-from keras.preprocessing.text import Tokenizer
-from keras.datasets import imdb
-import re
 import numpy as np
 import random
 import pandas as pd
@@ -12,11 +8,6 @@ import functions.ttt_predict as ttt_predict
 import functions.sentiment_predict as sentiment_predict
 
 app = Flask(__name__)
-
-
-
-
-
 
 global questionsGlobal
 
@@ -62,44 +53,15 @@ def my_form():
 # sentement analysis post ---------------------------------------------
 @app.route('/', methods=['POST'])
 def my_form_post():
-    tb._SYMBOLIC_SCOPE.value = True         # resolved error
 
+    # get text from input box
     itext = request.form['text']
 
-    words = re.sub("[^\w]", " ",  itext).split()
+    # function to do sentiment analysis
+    ynew, isentiment = sentiment_predict.sentiment_do_check(itext)
 
-    INDEX_FROM=3   # word index offset
-
-    # import os, ssl
-    # if (not os.environ.get('PYTHONHTTPSVERIFY', '') and
-    #         getattr(ssl, '_create_unverified_context',
-    #                 None)): ssl._create_default_https_context = ssl._create_unverified_contex
-
-    word_to_id = imdb.get_word_index()
-    word_to_id = {k:(v+INDEX_FROM) for k,v in word_to_id.items()}
-    word_to_id["<PAD>"] = 0
-    word_to_id["<START>"] = 1
-    word_to_id["<UNK>"] = 2
-    id_to_word = {value:key for key,value in word_to_id.items()}
-
-    x_ireview = [[word_to_id.get(i, 2) for i in words]]
-
-    tokenizer = Tokenizer(num_words=1000)
-
-    x_predict = tokenizer.sequences_to_matrix(x_ireview, mode='binary')
-
-    # ynew =loaded_model.predict_proba(x_predict)
-    ynew = sentiment_predict.sentiment_predict(x_predict)
-    #
-    if ynew[0, 1] < 0.5:
-        isentiment = ':('
-    else:
-        isentiment = ':)'
-
-    # return ynew, prednr
-    processed_text = ynew
     # return processed_text
-    return render_template('my-form.html', nnoutcome=processed_text, isentiment=isentiment, itext=itext)
+    return render_template('my-form.html', nnoutcome=ynew, isentiment=isentiment, itext=itext)
 
 # tic tac toe home page ---------------------------------------------
 @app.route('/tictactoe')
@@ -596,5 +558,5 @@ def my_PracticePost():
 
 if __name__ == '__main__':
     # app.run(host='0.0.0.0', port=80, threaded=False)
-    #app.run()
-    serve(app, host='0.0.0.0', port=80)
+    app.run()                                   # for working locally
+    # serve(app, host='0.0.0.0', port=80)       # for working in AWS
