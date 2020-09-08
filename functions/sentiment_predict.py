@@ -1,3 +1,5 @@
+import plotly.graph_objs as go
+
 def sentiment_predict(x_predict):
 #   sentiment model
     from keras.models import model_from_json
@@ -74,5 +76,38 @@ def sentiment_do_check(itext):
         else:
             isentiment = ':)'
 
-    return ynew, isentiment
+    return ynew, isentiment, ynew[0, 0], ynew[0, 1]
+
+
+def get_figures(iunhappy, ihappy):
+    ####
+    graph_one = []
+    # # df = cleandata('data/API_AG.LND.ARBL.HA.PC_DS2_en_csv_v2.csv')
+    # df =
+    # df.columns = ['Unhappy','Happy']
+    # # df.sort_values('hectaresarablelandperperson', ascending=False, inplace=True)
+    # df = df[df['year'] == 2015]
+
+    print(iunhappy)
+    print(ihappy)
+
+    graph_one.append(
+        go.Bar(
+        x = ['Unhappy', 'Happy'],
+        # y = ynew,
+        y = [iunhappy, ihappy]
+        )
+    )
+
+    layout_one = dict(title = 'Sentiment Analysis',
+                xaxis = dict(title = 'Sentiment',),
+                yaxis = dict(title = 'Happiness score', range=[0, 1], dtick=0.2, autorange=False),
+                )
+
+    figures = []
+    figures.append(dict(data=graph_one, layout=layout_one))
+
+    return figures
+
+###
 

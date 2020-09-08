@@ -6,6 +6,7 @@ import pandas as pd
 from waitress import serve
 import functions.ttt_predict as ttt_predict
 import functions.sentiment_predict as sentiment_predict
+import json, plotly
 
 app = Flask(__name__)
 
@@ -47,7 +48,19 @@ app.questionsGlobal = np.array(questionsDf)
 # sentement analysis is the home page ---------------------------------------------
 @app.route('/')
 def my_form():
-    return render_template('my-form.html')
+
+    figures = sentiment_predict.get_figures(0, 0)
+    # figures = return_figures()
+
+    # plot ids for the html id tag
+    ids = ['figure-{}'.format(i) for i, _ in enumerate(figures)]
+
+    # Convert the plotly figures to JSON for javascript in html template
+    figuresJSON = json.dumps(figures, cls=plotly.utils.PlotlyJSONEncoder)
+
+    return render_template('my-form.html',
+                           ids=ids,
+                           figuresJSON=figuresJSON)
 
 
 # sentement analysis post ---------------------------------------------
@@ -58,10 +71,21 @@ def my_form_post():
     itext = request.form['text']
 
     # function to do sentiment analysis
-    ynew, isentiment = sentiment_predict.sentiment_do_check(itext)
+    ynew, isentiment, iunhappy, ihappy = sentiment_predict.sentiment_do_check(itext)
+
+    # get charts...
+    figures = sentiment_predict.get_figures(iunhappy, ihappy)
+
+    # plot ids for the html id tag
+    ids = ['figure-{}'.format(i) for i, _ in enumerate(figures)]
+
+    # Convert the plotly figures to JSON for javascript in html template
+
+    figuresJSON = json.dumps(figures, cls=plotly.utils.PlotlyJSONEncoder)
+    #...charts
 
     # return processed_text
-    return render_template('my-form.html', nnoutcome=ynew, isentiment=isentiment, itext=itext)
+    return render_template('my-form.html', nnoutcome=ynew, isentiment=isentiment, itext=itext, ids=ids, figuresJSON=figuresJSON)
 
 # tic tac toe home page ---------------------------------------------
 @app.route('/tictactoe')
