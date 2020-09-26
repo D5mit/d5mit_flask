@@ -582,5 +582,5 @@ def my_PracticePost():
 
 if __name__ == '__main__':
     # app.run(host='0.0.0.0', port=80, threaded=False)
-    app.run()                                   # for working locally
-    # serve(app, host='0.0.0.0', port=80)       # for working in AWS
+    #app.run()                                   # for working locally
+    serve(app, host='0.0.0.0', port=80)       # for working in AWS
